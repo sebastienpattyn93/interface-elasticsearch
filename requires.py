@@ -17,8 +17,6 @@ from charms.reactive import scopes
 
 
 class ElasticSearchClient(RelationBase):
-    scope = scopes.SERVICE
-
     # Existing elasticsearch client interface listed here:
     # https://api.jujucharms.com/charmstore/v5/trusty/elasticsearch-13/archive/playbook.yaml
     attr_accessors = ['host', 'port']
