@@ -41,3 +41,8 @@ class ElasticSearchClient(RelationBase):
 
     def cluster_name(self):
         self.get_remote('cluster-name')
+
+    def list_units(self):
+        for conv in self.conversations():
+            unit = conv.scope
+            yield unit
