@@ -4,7 +4,7 @@
 
 ### Usage
 
-assuming you have a `requires` block in `metadata.yaml`:
+assuming you have a `requires` block in `metadata.yaml` accompanied by `interface:elasticsearch` in `layer.yaml`:
 
      requires:
        elasticsearch:
