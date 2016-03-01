@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +12,6 @@
 
 from charms.reactive import RelationBase
 from charms.reactive import hook
-from charms.reactive import scopes
 
 
 class ElasticSearchClient(RelationBase):
@@ -28,14 +26,12 @@ class ElasticSearchClient(RelationBase):
         # assume we have all the data if we have the port
         if conv.get_remote('port'):
             conv.set_state('{relation_name}.available')
-        
+
     @hook('{requires:elasticsearch}-relation-{broken, departed}')
     def broken(self):
         self.remove_state('{relation_name}.connected')
         self.remove_state('{relation_name}.connected')
         self.set_state('{relation_name}.broken')
-
-
 
     def cluster_name(self):
         self.get_remote('cluster-name')
