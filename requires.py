@@ -19,7 +19,7 @@ from charms.reactive import scopes
 class ElasticSearchClient(RelationBase):
     # Existing elasticsearch client interface listed here:
     # https://api.jujucharms.com/charmstore/v5/trusty/elasticsearch-13/archive/playbook.yaml
-    attr_accessors = ['host', 'port']
+    auto_accessors = ['host', 'port']
 
     @hook('{requires:elasticsearch}-relation-{joined,changed}')
     def changed(self):
@@ -28,19 +28,22 @@ class ElasticSearchClient(RelationBase):
         # assume we have all the data if we have the port
         if conv.get_remote('port'):
             conv.set_state('{relation_name}.available')
-        
+
     @hook('{requires:elasticsearch}-relation-{broken, departed}')
     def broken(self):
         self.remove_state('{relation_name}.connected')
         self.remove_state('{relation_name}.connected')
         self.set_state('{relation_name}.broken')
 
+    def list_unit_data(self):
+        ''' Iterate through all ElasticSearch conversations and return the data
+        for each cached conversation. This allows us to build a cluster string
+        directly from the relation data. eg:
 
-
-    def cluster_name(self):
-        self.get_remote('cluster-name')
-
-    def list_units(self):
+        for unit in elasticsearch.list_data():
+            print(unit['cluster_name'])
+        '''
         for conv in self.conversations():
-            unit = conv.scope
-            yield unit
+            yield {'cluster_name': conv.get_remote('cluster_name'),
+                   'host': conv.get_remote('host'),
+                   'port': conv.get_remote('port')}
