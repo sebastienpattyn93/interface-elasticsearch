@@ -1,37 +1,66 @@
 # Elasticsearch Interface
 
-> Used to connect an Elasticsearch client to an Elasticsearch charm
+ This is a Juju charm interface layer. This interface is used for
+ connecting to an Elasticsearch unit.
 
-### Usage
+### Examples
 
-assuming you have a `requires` block in `metadata.yaml` accompanied by `interface:elasticsearch` in `layer.yaml`:
+#### Requires
 
-     requires:
-       elasticsearch:
-         interface: elasticsearch
+If your charm needs to connect to ElasticSearch:
 
-then you can consume the cluster as follows:
+  `metadata.yaml`
 
-     @when('elasticsearch.available')
-     def connect_to_elasticsearch(elasticsearch):
-         print(elasticsearch.host())
-         print(elasticsearch.port())
-         print(elasticsearch.cluster_name())
+```yaml
+requires:
+  elasticsearch:
+    interface: elasticsearch
+```
+
+  `layer.yaml`
+
+```yaml
+includes: ['interface:elasticsearch']
+```  
+
+  `reactive/code.py`
+
+```
+@when('elasticsearch.available')
+def connect_to_elasticsearch(elasticsearch):
+    print(elasticsearch.host())
+    print(elasticsearch.port())
+    print(elasticsearch.cluster_name())
+
+```
 
 
-#### States
+#### Provides
 
-**elasticsearch.connected** - Denotes that the client has connected to the
-elasticsearch node(s), but has not yet received the data to configure the
+If your charm needs to provide Elasticsearch connection details:
+
+- NOT IMPLEMENTED, check back later *coming soon*
+
+### States
+
+**{relation_name}.connected** - Denotes that the client has connected to the
+Elasticsearch node(s), but has not yet received the data to configure the
 connection.
 
-**elasticsearch.available** - Denotes that the client has connected and received
-all the information from the provider to make the connection.
+**{relation_name}.available** - Denotes that the client has connected and
+received all the information from the provider to make the connection.
 
-**elasticsearch.departed** - Denotes that the unit has departed from the elasticsearch
-relationship, and should be removed from any configuration files, etc.
+**{relation_name}.departed** - Denotes that the unit has departed from the
+ Elasticsearch relationship, and should be removed from any configuration
+ files, etc.
+
+### Data
+
+- **host** - The units private address
+- **port** - TCP Port to use
+- **cluster_name** - The Elasticsearch clusters' name
 
 ## Maintainers
- 
- - [Matt Bruzek](mailto:matthew.bruzek@canonical.com) &lt;matthew.bruzek@canonical.com&gt;
- - [Charles Butler](mailto:charles.butler@canonical.com) &lt;charles.butler@canonical.com&gt;
+
+ - Matt Bruzek &lt;matthew.bruzek@canonical.com&gt;
+ - Charles Butler &lt;charles.butler@canonical.com&gt;
