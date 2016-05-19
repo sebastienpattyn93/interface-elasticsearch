@@ -27,9 +27,10 @@ class ElasticSearchClient(RelationBase):
         if conv.get_remote('port'):
             conv.set_state('{relation_name}.available')
 
-    @hook('{requires:elasticsearch}-relation-{broken, departed}')
-    def broken(self):
+    @hook('{requires:elasticsearch}-relation-{departed}')
+    def departed(self):
         self.remove_state('{relation_name}.connected')
+        self.remove_state('{relation_name}.available')
         self.set_state('{relation_name}.broken')
 
     def list_unit_data(self):
