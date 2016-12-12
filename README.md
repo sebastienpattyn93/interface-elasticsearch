@@ -39,7 +39,33 @@ def connect_to_elasticsearch(elasticsearch):
 
 If your charm needs to provide Elasticsearch connection details:
 
-- NOT IMPLEMENTED, check back later *coming soon*
+    If your charm needs to connect to ElasticSearch:
+
+      `metadata.yaml`
+
+    ```yaml
+    provides:
+      elasticsearch:
+        interface: elasticsearch
+    ```
+
+      `layer.yaml`
+
+    ```yaml
+    includes: ['interface:elasticsearch']
+    ```  
+
+      `reactive/code.py`
+
+    ```
+    @when('client.available')
+    def connect_to_client(client):
+        conf = config()
+        cluster_name = conf['cluster-name']
+        port = conf['port']
+        client.configure(port,cluster_name)
+
+    ```
 
 ### States
 
