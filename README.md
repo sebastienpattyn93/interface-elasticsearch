@@ -25,7 +25,7 @@ includes: ['interface:elasticsearch']
 
   `reactive/code.py`
 
-```
+```python
 @when('elasticsearch.available')
 def connect_to_elasticsearch(elasticsearch):
     print(elasticsearch.host())
@@ -39,33 +39,30 @@ def connect_to_elasticsearch(elasticsearch):
 
 If your charm needs to provide Elasticsearch connection details:
 
-    If your charm needs to connect to ElasticSearch:
+  `metadata.yaml`
+  
+```yaml
+provides:
+  elasticsearch:
+    interface: elasticsearch
+```
 
-      `metadata.yaml`
+  `layer.yaml`
+  
+```yaml
+includes: ['interface:elasticsearch']
+```
 
-    ```yaml
-    provides:
-      elasticsearch:
-        interface: elasticsearch
-    ```
+  `reactive/code.py`
 
-      `layer.yaml`
-
-    ```yaml
-    includes: ['interface:elasticsearch']
-    ```  
-
-      `reactive/code.py`
-
-    ```
-    @when('client.available')
-    def connect_to_client(client):
-        conf = config()
-        cluster_name = conf['cluster-name']
-        port = conf['port']
-        client.configure(port,cluster_name)
-
-    ```
+```python
+@when('client.available')
+def connect_to_client(client):
+    conf = config()
+    cluster_name = conf['cluster-name']
+    port = conf['port']
+    client.configure(port,cluster_name)
+```
 
 ### States
 
