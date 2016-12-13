@@ -22,17 +22,12 @@ class ElasticSearchProvides(RelationBase):
 
     auto_accessors = ['host', 'port']
     # Use some template magic to declare our relation(s)
-    @hook('{provides:elasticsearch}-relation-joined')
+    @hook('{provides:elasticsearch}-relation-{joined,changed}')
     def joined(self):
         self.set_state('{relation_name}.connected')
 
-    @hook('{provides:elasticsearch}-relation-changed')
-    def changed(self):
-        self.set_state('{relation_name}.ready')
-
     @hook('{provides:elasticsearch}-relation-departed')
     def departed(self):
-        self.remove_state('{relation_name}.ready')
         self.remove_state('{relation_name}.connected')
         self.set_state('{relation_name}.broken')
 
