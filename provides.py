@@ -33,7 +33,7 @@ class ElasticSearchProvides(RelationBase):
     @hook('{provides:elasticsearch}-relation-departed')
     def departed(self):
         self.remove_state('{relation_name}.ready')
-        self.remove_state('{relation_name}.joined')
+        self.remove_state('{relation_name}.connected')
 
     def configure(self, port, cluster_name):
         conv = self.conversation()
