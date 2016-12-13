@@ -24,7 +24,7 @@ class ElasticSearchProvides(RelationBase):
     # Use some template magic to declare our relation(s)
     @hook('{provides:elasticsearch}-relation-joined')
     def joined(self):
-        self.set_state('{relation_name}.available')
+        self.set_state('{relation_name}.connected')
 
     @hook('{provides:elasticsearch}-relation-changed')
     def changed(self):
