@@ -34,6 +34,7 @@ class ElasticSearchProvides(RelationBase):
     def departed(self):
         self.remove_state('{relation_name}.ready')
         self.remove_state('{relation_name}.connected')
+        self.set_state('{relation_name}.broken')
 
     def configure(self, port, cluster_name):
         conv = self.conversation()
