@@ -22,12 +22,12 @@ class ElasticSearchProvides(RelationBase):
 
     # Use some template magic to declare our relation(s)
 
-    @hook('{provides:elasticsearchlocal}-relation-{joined,changed}')
+    @hook('{provides:elasticsearch}-relation-{joined,changed}')
     def joined(self):
         conv = self.conversation()
         conv.set_state('{relation_name}.connected')
 
-    @hook('{provides:elasticsearchlocal}-relation-{departed,broken}')
+    @hook('{provides:elasticsearch}-relation-{departed,broken}')
     def departed(self):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')

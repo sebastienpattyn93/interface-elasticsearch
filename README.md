@@ -40,7 +40,7 @@ def connect_to_elasticsearch(elasticsearch):
 If your charm needs to provide Elasticsearch connection details:
 
   `metadata.yaml`
-  
+
 ```yaml
 provides:
   elasticsearch:
@@ -48,7 +48,7 @@ provides:
 ```
 
   `layer.yaml`
-  
+
 ```yaml
 includes: ['interface:elasticsearch']
 ```
@@ -56,12 +56,14 @@ includes: ['interface:elasticsearch']
   `reactive/code.py`
 
 ```python
-@when('client.available')
+@when('client.connected')
 def connect_to_client(client):
     conf = config()
     cluster_name = conf['cluster-name']
     port = conf['port']
     client.configure(port,cluster_name)
+    for c in client.list_connected_clients_data():
+        host_ip = c.get_remote_ip()
 ```
 
 ### States

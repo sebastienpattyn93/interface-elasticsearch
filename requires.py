@@ -22,7 +22,7 @@ class ElasticSearchClient(RelationBase):
     scope = scopes.UNIT
     auto_accessors = ['host', 'port']
 
-    @hook('{requires:elasticsearchlocal}-relation-{joined,changed}')
+    @hook('{requires:elasticsearch}-relation-{joined,changed}')
     def changed(self):
         self.set_state('{relation_name}.connected')
         conv = self.conversation()
@@ -30,7 +30,7 @@ class ElasticSearchClient(RelationBase):
         if conv.get_remote('port'):
             conv.set_state('{relation_name}.available')
 
-    @hook('{requires:elasticsearchlocal}-relation-{departed,broken}')
+    @hook('{requires:elasticsearch}-relation-{departed,broken}')
     def departed(self):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')
