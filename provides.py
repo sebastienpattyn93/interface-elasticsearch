@@ -21,6 +21,7 @@ class ElasticSearchProvides(RelationBase):
     scope = scopes.GLOBAL
 
     # Use some template magic to declare our relation(s)
+
     @hook('{provides:elasticsearchlocal}-relation-{joined,changed}')
     def joined(self):
         conv = self.conversation()
@@ -31,6 +32,7 @@ class ElasticSearchProvides(RelationBase):
         conv = self.conversation()
         conv.remove_state('{relation_name}.connected')
         conv.set_state('{relation_name}.broken')
+
 
     def configure(self, port, cluster_name):
         conv = self.conversation()
