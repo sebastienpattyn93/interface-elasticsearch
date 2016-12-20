@@ -20,25 +20,29 @@ class ElasticSearchProvides(RelationBase):
     # Every unit connecting will get the same information
     scope = scopes.GLOBAL
 
-    auto_accessors = ['host', 'port']
     # Use some template magic to declare our relation(s)
-    @hook('{provides:elasticsearch}-relation-joined')
+    @hook('{provides:elasticsearchlocal}-relation-{joined,changed}')
     def joined(self):
-        self.set_state('{relation_name}.available')
+        conv = self.conversation()
+        conv.set_state('{relation_name}.connected')
 
-    @hook('{provides:elasticsearch}-relation-changed')
-    def changed(self):
-        self.set_state('{relation_name}.ready')
-
-    @hook('{provides:elasticsearch}-relation-departed')
+    @hook('{provides:elasticsearchlocal}-relation-{departed,broken}')
     def departed(self):
-        self.remove_state('{relation_name}.ready')
-        self.remove_state('{relation_name}.joined')
+        conv = self.conversation()
+        conv.remove_state('{relation_name}.connected')
+        conv.set_state('{relation_name}.broken')
 
     def configure(self, port, cluster_name):
         conv = self.conversation()
         conv.set_remote(data={
             'port': port,
-            'cluster_name': cluster_name,
-            'host': hookenv.unit_get('private-address')
-        })
+            'cluster_name': cluster_name
+            })
+
+    @property
+    def list_connected_clients_data(self):
+        clients = []
+        for conv in self.conversations():
+            ip_address = conv.get_remote('private-address')
+            clients.extend(ip_address)
+        return clients
