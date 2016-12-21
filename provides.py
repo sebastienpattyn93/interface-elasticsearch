@@ -46,5 +46,5 @@ class ElasticSearchProvides(RelationBase):
         clients = []
         for conv in self.conversations():
             ip_address = conv.get_remote('private-address')
-            clients.extend(ip_address)
+            clients.append(ip_address)
         return clients
