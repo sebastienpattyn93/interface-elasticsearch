@@ -1,3 +1,4 @@
+#!/bin/env python3
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,7 +21,6 @@ class ElasticSearchClient(RelationBase):
     # Existing elasticsearch client interface listed here:
     # https://api.jujucharms.com/charmstore/v5/trusty/elasticsearch-13/archive/playbook.yaml
     scope = scopes.UNIT
-    auto_accessors = ['host', 'port']
 
     @hook('{requires:elasticsearch}-relation-{joined,changed}')
     def changed(self):
